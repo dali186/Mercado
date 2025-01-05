@@ -1,0 +1,16 @@
+spring:
+  sql:
+    init:
+      mode: always
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    defer-datasource-initialization: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/commerce_db?serverTimezone=Asia/Seoul
+    username: commerce_admin
+    password: commerceadmin12!@
