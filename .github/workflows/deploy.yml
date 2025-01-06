@@ -43,7 +43,7 @@ jobs:
         APP: "Mercado"
         COMPOSE: "${{ github.workspace }}/docker-compose.yml"
       with:
-        username: azureuser
+        username: mercado
         host: ${{ secrets.AZURE_HOST }}
         key: ${{ secrets.AZURE_PRIVATE_KEY }}
         envs: APP, COMPOSE
