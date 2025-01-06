@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dali186.Mercado.dto.MemberJoinDto;
 import com.dali186.Mercado.entity.Member;
 import com.dali186.Mercado.service.MemberService;
+import com.dali186.Mercado.util.response.ResultCode;
+import com.dali186.Mercado.util.response.ResultEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,8 +22,8 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@RequestMapping("/join")
-	public ResponseEntity<Member> joinMember(@RequestBody MemberJoinDto request) {
+	public ResultEntity<Member> joinMember(@RequestBody MemberJoinDto request) {
 		
-		return ResponseEntity.ok(memberService.joinMember(request));
+		return ResultEntity.success(memberService.joinMember(request), ResultCode.memberJoinSuc);
 	}
 }
