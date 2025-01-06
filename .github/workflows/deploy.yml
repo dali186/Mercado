@@ -32,7 +32,7 @@ jobs:
     
     # WAS Gradle 빌드
     - name: Build with Gradle
-      run: ./gradlew build -x test
+      run: ./gradlew clean build -x test
 
     # 도커 로그인
     - name: Docker Login
@@ -44,7 +44,7 @@ jobs:
     # Docker 이미지 빌드
     - name: Build Docker Image
       run: |
-        docker build -t kizm2wn/mercado-was:latest .
+        docker build --no-cache -t kizm2wn/mercado-was:latest .
 
     # DockerHub에 푸시
     - name: Push Docker Image to DockerHub
