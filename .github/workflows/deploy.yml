@@ -64,6 +64,9 @@ jobs:
         envs: APP, COMPOSE
         script_stop: true
         script: |
+          echo "Pulling Docker Image from DockerHub..."
+          sudo docker pull kizm2wn/mercado-was:latest
+          
           echo "Stopping existing containers..."
           sudo docker-compose -f $COMPOSE down
           
