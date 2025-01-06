@@ -3,9 +3,11 @@ name: Integration with Gradle
 
 # 브랜치 지정
 on:
-  push:
+  pull_request:
     branches:
-      - develop
+      - main  # main 브랜치로의 PR에 대해 실행
+    types:
+      - synchronize  # PR에 커밋이 푸시될 때마다 실행
 
 jobs:
   build_and_deploy:
@@ -15,7 +17,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
       with:
-        ref: feature/#1-Enviroment-Setting  # develop 브랜치로 체크아웃
+        ref: ${{ github.head_ref }}
     
     # Java Setting
     - name: Set up JDK 21
