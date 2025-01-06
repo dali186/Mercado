@@ -41,7 +41,7 @@ jobs:
       uses: appleboy/ssh-action@master
       env:
         APP: "Mercado"
-        COMPOSE: "${{ github.workspace }}/docker-compose.yml"
+        COMPOSE: "/home/mercado/compose/docker-compose.yml"
       with:
         username: mercado
         host: ${{ secrets.AZURE_HOST }}
