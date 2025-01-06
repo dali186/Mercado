@@ -1,24 +1,27 @@
 package com.dali186.Mercado.util.response;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @AllArgsConstructor
 @Builder
+@Getter
+@Setter
 public class ResultEntity<T> {
-	private String resultMsg;
-	private T resultData;
-	private HttpStatus httpStatus;
-	
-	public static <T> ResultEntity<T> success(T data, String msg) {
-		return new ResultEntity<>(msg, data, HttpStatus.OK); 
-	}
-	
-	public static <T> ResultEntity<T> error(T data, String msg) {
-		return new ResultEntity<>(msg, data, HttpStatus.HTTP_VERSION_NOT_SUPPORTED); 
-	} 
+    private boolean success;
+    private T data;
+    private String message;
+
+    public static <T> ResultEntity<T> success(T data, String message) {
+        return new ResultEntity<>(true, data, message);
+    }
+
+    public static <T> ResultEntity<T> error(String message) {
+        return new ResultEntity<>(false, null, message);
+    }
 }
+
