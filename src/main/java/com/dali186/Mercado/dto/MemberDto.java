@@ -17,7 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class MemberJoinDto {
+public class MemberDto {
 	private String id;
 	private String pwd;
 	private String name;

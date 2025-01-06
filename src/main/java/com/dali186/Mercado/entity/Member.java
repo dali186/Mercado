@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @ToString
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
