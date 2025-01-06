@@ -15,7 +15,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
-  commerce_was:
+  mercado-was:
     build:
       context: .  # Dockerfile이 있는 디렉토리 (현재 디렉토리로 설정)
     container_name: mercado_was
