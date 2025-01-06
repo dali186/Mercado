@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqladmin
+    ports:
+      - "3306:3306"
+    networks:
+      - mercado_net
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  mercado-was:
+    image: myusername/mercado-was:latest  # DockerHub에서 풀(pull)할 이미지 이름
+    container_name: mercado_was
+    ports:
+      - "8080:8080"
+    networks:
+      - mercado_net
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+networks:
+  mercado_net:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
