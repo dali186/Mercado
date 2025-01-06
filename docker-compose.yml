@@ -16,6 +16,7 @@ services:
     restart: unless-stopped
 
   mercado-was:
+    image: myusername/mercado-was:latest  # DockerHub에서 풀(pull)할 이미지 이름
     container_name: mercado_was
     ports:
       - "8080:8080"
