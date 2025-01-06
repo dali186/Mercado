@@ -15,7 +15,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
       with:
-        ref: develop  # develop 브랜치로 체크아웃
+        ref: feature/#1-Enviroment-Setting  # develop 브랜치로 체크아웃
     
     # Java Setting
     - name: Set up JDK 21
