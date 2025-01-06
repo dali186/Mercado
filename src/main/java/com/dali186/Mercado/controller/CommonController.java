@@ -19,3 +19,4 @@ public class CommonController {
 		return version;
 	}
 }
+	
