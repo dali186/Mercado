@@ -5,7 +5,7 @@ name: Integration with Gradle
 on:
   pull_request:
     branches:
-      - main  # main 브랜치로의 PR에 대해 실행
+      - develop
     types:
       - synchronize  # PR에 커밋이 푸시될 때마다 실행
 
