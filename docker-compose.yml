@@ -16,8 +16,6 @@ services:
     restart: unless-stopped
 
   mercado-was:
-    build:
-      context: .  # Dockerfile이 있는 디렉토리 (현재 디렉토리로 설정)
     container_name: mercado_was
     ports:
       - "8080:8080"
