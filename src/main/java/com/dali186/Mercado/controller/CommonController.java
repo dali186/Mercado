@@ -9,7 +9,7 @@ public class CommonController {
 
 	@RequestMapping("/actions")
 	public String gitHubActionsTest() {
-		String version = "v2";
+		String version = "v3";
 		
 		return version;
 	}
