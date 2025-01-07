@@ -1,10 +1,15 @@
 package com.dali186.Mercado.entity;
 
+import com.dali186.Mercado.dto.PostRequestDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,18 +25,26 @@ public class Post extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long post_sn;
+	private Long postSn;
 	@Column(length = 100, nullable = false)
 	private String title;
 	@Column(nullable = false)
 	private String content;
-	@Column(nullable = false)
-	private Long author_sn;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "author_sn", referencedColumnName = "memberSn")
+	private Member author;
 	
 	@Builder
-	public Post(String title, String content, Long author) {
+	public Post(String title, String content, Member author) {
 		this.title = title;
 		this.content = content;
-		this.author_sn = author;
+		this.author = author;
+	}
+	
+	public Post updatePost(PostRequestDto post) {
+		this.title = post.getTitle();
+		this.content = post.getContent();
+		
+		return post.toEntity();
 	}
 }
