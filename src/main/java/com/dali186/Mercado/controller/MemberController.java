@@ -1,5 +1,6 @@
 package com.dali186.Mercado.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class MemberController {
 	/**
 	 * methodName: joinMember
 	 * description: 사용자 회원가입
-	 *
+	 * domain: controller
 	 * ========================================
 	 * @since 2025. 1. 6.
 	 * @author JOOWON
@@ -38,9 +39,23 @@ public class MemberController {
 		return ResultEntity.success(memberService.joinMember(request), ResultCode.memberJoinSuc);
 	}
 	
+	/**
+	 * methodName: findMember
+	 * description: 단일 사용자 조회
+	 * domain: controller
+	 * ========================================
+	 * @since 2025. 1. 7.
+	 * @author jwkim
+	 */
 	@RequestMapping("/findMember/{memberSn}")
 	public ResultEntity<Member> findMember(@PathVariable("id") Long memberSn) {
 		Member member = memberService.findMember(memberSn);
 		return ResultEntity.success(member, ResultCode.memberJoinSuc);
+	}
+	
+	@RequestMapping("/findMember/all")
+	public ResultEntity<List<Member>> findMemberList() {
+		
+		return ResultEntity.success(memberService.findMemberList(), ResultCode.memberFindSuc);
 	}
 }

@@ -18,6 +18,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class MemberDto {
+	private Long memberSn;
 	private String id;
 	private String pwd;
 	private String name;

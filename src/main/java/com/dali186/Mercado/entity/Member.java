@@ -1,5 +1,7 @@
 package com.dali186.Mercado.entity;
 
+import com.dali186.Mercado.dto.MemberDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +22,7 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long member_sn;
 	
-	@Column(length = 20, nullable = false, unique = true, name = "member_id")
+	@Column(length = 20, nullable = false, unique = true)
 	private String id;
 	
 	@Column(length = 30, nullable = false)
@@ -38,5 +40,13 @@ public class Member extends BaseEntity {
 		this.pwd = pwd;
 		this.name = name;
 		this.email = email;
+	}
+	
+	public Member updateMemberInfo (MemberDto member) {
+		this.id = member.getId();
+		this.name = member.getName();
+		this.email = member.getEmail();
+		
+		return member.toEntity();
 	}
 }
