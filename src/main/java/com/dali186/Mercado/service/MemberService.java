@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dali186.Mercado.dto.MemberDto;
 import com.dali186.Mercado.entity.Member;
@@ -37,7 +38,7 @@ public class MemberService {
 	
 	/**
 	 * methodName: findMember
-	 * description: 단일 사용자 조회
+	 * description: 단일 사용자 조회(memberSn)
 	 * domain: Service
 	 * ========================================
 	 * @since 2025. 1. 7.
@@ -47,6 +48,20 @@ public class MemberService {
 	public Member findMember(Long memberSn) {
 		
 		return memberRepository.findById(memberSn).orElseThrow(() -> new ResourceNotFoundException(ResultCode.MEMBER_FIND_ERR, 404));
+	}
+	
+	/**
+	 * methodName: findMember
+	 * description: 단일 사용자 조회(id)
+	 * domain: Service
+	 * ========================================
+	 * @since 2025. 1. 7.
+	 * @author jwkim
+	 */
+	@Transactional
+	public Member findMember(String id) throws ResourceNotFoundException {
+		
+		return memberRepository.findByMemberId(id);
 	}
 	
 	/**
@@ -73,8 +88,7 @@ public class MemberService {
 	 */
 	@Transactional
 	public Member updateMember(MemberDto request) {
-		Long memberSn = request.getMemberSn();
-		Member member = findMember(memberSn);
+		Member member = this.findMember(request.getMemberSn());
 		
 		return member.updateMemberInfo(request);
 	}
@@ -89,7 +103,10 @@ public class MemberService {
 	 */
 	@Transactional
 	public void deleteMember(Long memberSn) {
-		
-		memberRepository.deleteById(memberSn);
+	    if (!memberRepository.existsById(memberSn)) {
+	        throw new ResourceNotFoundException(ResultCode.MEMBER_FIND_ERR, 404);
+	    }
+	    
+	    memberRepository.deleteById(memberSn);
 	}
 }

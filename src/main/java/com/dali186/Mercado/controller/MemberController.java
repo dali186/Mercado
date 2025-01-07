@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dali186.Mercado.dto.MemberDto;
@@ -79,7 +80,10 @@ public class MemberController {
 	 * @author jwkim
 	 */
 	@RequestMapping("/updateMember")
-	public ResultEntity<Member> updateMember(MemberDto request) {
+	public ResultEntity<Member> updateMember(@RequestBody MemberDto request) {
+		Long memberSn = 1L;
+		request.setMemberSn(memberSn);
+		
 		Member updatedMember = memberService.updateMember(request);
 		return ResultEntity.success(updatedMember, updatedMember.getId() + ResultCode.MEMBER_UPD_SUCC);
 	}
@@ -92,8 +96,8 @@ public class MemberController {
 	 * @since 2025. 1. 7.
 	 * @author jwkim
 	 */
-	@RequestMapping("/deleteMember")
-	public ResultEntity<Member> deleteMember(Long memberSn) {
+	@RequestMapping("/deleteMember/{memberSn}")
+	public ResultEntity<Member> deleteMember(@PathVariable("memberSn") Long memberSn) {
 		memberService.deleteMember(memberSn);
 		return ResultEntity.success(null, ResultCode.MEMBER_DEL_SUCC);
 	}
