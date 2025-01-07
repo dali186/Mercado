@@ -1,6 +1,7 @@
 # Mercado
 ### 작업내역
-##### Docker + docker-compose + GitHub Actions CD환경 구축 25.01.06(2days)
+25.01.06(2days)
+##### Docker + docker-compose + GitHub Actions CD환경 구축
 ![docker_compose_actions](https://github.com/user-attachments/assets/121bd1ad-c0b4-49fa-8db9-afba533ff175)
 ##### 이슈내용
 1. GitHub Actions runner에서의 docker-compose.yml 파일 참조 이슈
@@ -13,3 +14,11 @@
   - 대신 DockerHub를 활용하여 Push/Pull 방식으로 프로세스 변경.
 - 특이사항
   - docker-compose.yml 파일은 프로젝트 최상단에 위치, /home/Mercado/compose/docker-compose.yml 경로로 이동 후 빌드
+    
+25.01.07(1days)
+##### 공통 응답 세팅 및 기본 Entity CRUD 구현
+##### 이슈내용
+1. JPA
+- Hibernate는 엔티티 클래스를 생성할 때 기본 생성자를 사용하기 때문에 Entity에 필수로 구현해둘 것
+2. JUnit
+- Mockito를 이용한 단위테스트 구현
