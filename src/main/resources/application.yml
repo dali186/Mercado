@@ -5,7 +5,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     defer-datasource-initialization: true
 
@@ -14,3 +14,13 @@ spring:
     url: jdbc:mysql://mysql:3306/mercado_db?serverTimezone=Asia/Seoul
     username: mercado_admin
     password: mercadoadmin12!@
+
+  logging:
+    file:
+      name: /var/log/spring_access%d{yyyy-MM-dd}.log  # 로그 파일 경로와 이름 설정
+    pattern:
+      console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"  # 콘솔 로그 출력 패턴 설정
+      file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"  # 파일 로그 출력 패턴 설정
+    level:
+      root: INFO
+      com.dali186.Mercado: DEBUG

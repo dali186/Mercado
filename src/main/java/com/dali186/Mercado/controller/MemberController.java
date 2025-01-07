@@ -17,7 +17,9 @@ import com.dali186.Mercado.util.response.ResultCode;
 import com.dali186.Mercado.util.response.ResultEntity;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
@@ -36,6 +38,7 @@ public class MemberController {
 	@RequestMapping("/join")
 	public ResultEntity<Member> joinMember(@RequestBody MemberDto request) {
 		
+		log.info(request.getId() + "joined.");
 		return ResultEntity.success(memberService.joinMember(request), ResultCode.memberJoinSuc);
 	}
 	
@@ -48,7 +51,7 @@ public class MemberController {
 	 * @author jwkim
 	 */
 	@RequestMapping("/findMember/{memberSn}")
-	public ResultEntity<Member> findMember(@PathVariable("id") Long memberSn) {
+	public ResultEntity<Member> findMember(@PathVariable("memberSn") Long memberSn) {
 		Member member = memberService.findMember(memberSn);
 		return ResultEntity.success(member, ResultCode.memberJoinSuc);
 	}

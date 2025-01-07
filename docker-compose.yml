@@ -22,6 +22,8 @@ services:
       - "8080:8080"
     networks:
       - mercado_net
+    volumes:
+      - /Mercado/logs/spring-log:/var/log 
     depends_on:
       - mysql
     restart: unless-stopped
