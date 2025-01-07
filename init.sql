@@ -1,4 +1,4 @@
-CREATE DATABASE commerce_db CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER 'commerce_admin'@'%' IDENTIFIED BY 'commerceadmin12!@';
-GRANT ALL PRIVILEGES ON commerce_db.* TO 'commerce_admin'@'%';
+CREATE DATABASE mercado_db CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER 'mercado_admin'@'%' IDENTIFIED BY 'mercadoadmin12!@';
+GRANT ALL PRIVILEGES ON mercado_db.* TO 'mercado_admin'@'%';
 FLUSH PRIVILEGES;
