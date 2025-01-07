@@ -39,7 +39,7 @@ public class MemberController {
 	public ResultEntity<Member> joinMember(@RequestBody MemberDto request) {
 		
 		log.info(request.getId() + "joined.");
-		return ResultEntity.success(memberService.joinMember(request), ResultCode.memberJoinSuc);
+		return ResultEntity.success(memberService.joinMember(request), request.getId() + ResultCode.MEMBER_JOIN_SUCC);
 	}
 	
 	/**
@@ -53,12 +53,40 @@ public class MemberController {
 	@RequestMapping("/findMember/{memberSn}")
 	public ResultEntity<Member> findMember(@PathVariable("memberSn") Long memberSn) {
 		Member member = memberService.findMember(memberSn);
-		return ResultEntity.success(member, ResultCode.memberJoinSuc);
+		return ResultEntity.success(member, member.getId() + ResultCode.MEMBER_FIND_SUCC);
 	}
 	
+	/**
+	 * methodName:findMeberList
+	 * description: 전체 사용자 조회
+	 * domain: controller
+	 * ========================================
+	 * @since 2025. 1. 7.
+	 * @author jwkim
+	 */
 	@RequestMapping("/findMember/all")
 	public ResultEntity<List<Member>> findMemberList() {
 		
-		return ResultEntity.success(memberService.findMemberList(), ResultCode.memberFindSuc);
+		return ResultEntity.success(memberService.findMemberList(), ResultCode.COMMON_FIND_SUCC);
+	}
+	
+	/**
+	 * methodName: updateMember
+	 * description: 사용자 업데이트
+	 * domain: controller
+	 * ========================================
+	 * @since 2025. 1. 7.
+	 * @author jwkim
+	 */
+	@RequestMapping("/updateMember")
+	public ResultEntity<Member> updateMember(MemberDto request) {
+		Member updatedMember = memberService.updateMember(request);
+		return ResultEntity.success(updatedMember, updatedMember.getId() + ResultCode.MEMBER_UPD_SUCC);
+	}
+	
+	@RequestMapping("/deleteMember")
+	public ResultEntity<Member> deleteMember(Long memberSn) {
+		memberService.deleteMember(memberSn);
+		return ResultEntity.success(null, ResultCode.MEMBER_DEL_SUCC);
 	}
 }

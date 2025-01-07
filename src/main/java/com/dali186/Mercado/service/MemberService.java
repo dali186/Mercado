@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.dali186.Mercado.dto.MemberDto;
 import com.dali186.Mercado.entity.Member;
 import com.dali186.Mercado.repository.MemberRepository;
+import com.dali186.Mercado.util.exception.ResourceDuplicatedException;
 import com.dali186.Mercado.util.exception.ResourceNotFoundException;
 import com.dali186.Mercado.util.response.ResultCode;
 
@@ -29,7 +30,7 @@ public class MemberService {
 	 * @author JOOWON
 	 */
 	@Transactional
-	public Member joinMember(MemberDto request) {
+	public Member joinMember(MemberDto request) throws ResourceDuplicatedException {
 		
 		return memberRepository.save(request.toEntity());
 	}
@@ -45,7 +46,7 @@ public class MemberService {
 	@Transactional
 	public Member findMember(Long memberSn) {
 		
-		return memberRepository.findById(memberSn).orElseThrow(() -> new ResourceNotFoundException(ResultCode.memberFindErr, 404));
+		return memberRepository.findById(memberSn).orElseThrow(() -> new ResourceNotFoundException(ResultCode.MEMBER_FIND_ERR, 404));
 	}
 	
 	/**
@@ -76,5 +77,11 @@ public class MemberService {
 		Member member = findMember(memberSn);
 		
 		return member.updateMemberInfo(request);
+	}
+	
+	@Transactional
+	public void deleteMember(Long memberSn) {
+		
+		memberRepository.deleteById(memberSn);
 	}
 }
