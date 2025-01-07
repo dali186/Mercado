@@ -84,6 +84,14 @@ public class MemberController {
 		return ResultEntity.success(updatedMember, updatedMember.getId() + ResultCode.MEMBER_UPD_SUCC);
 	}
 	
+	/**
+	 * methodName: deleteMember
+	 * description: 사용자 제거
+	 * domain: controller
+	 * ========================================
+	 * @since 2025. 1. 7.
+	 * @author jwkim
+	 */
 	@RequestMapping("/deleteMember")
 	public ResultEntity<Member> deleteMember(Long memberSn) {
 		memberService.deleteMember(memberSn);

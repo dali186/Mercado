@@ -2,59 +2,136 @@ package com.dali186.Mercado.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.dali186.Mercado.dto.MemberDto;
 import com.dali186.Mercado.entity.Member;
 import com.dali186.Mercado.repository.MemberRepository;
+import com.dali186.Mercado.util.exception.ResourceDuplicatedException;
+import com.dali186.Mercado.util.exception.ResourceNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {
 	
-	@Mock
-	private MemberRepository memberRepository;
-	
-	@InjectMocks
-	private MemberService memberService;
-	
-	@Test
-	@DisplayName("사용자 가입 테스트")
-	public void joinMemberTest() {
-		//given
-		MemberDto memberDto = MemberDto.builder().id("tester01").pwd("tester12!@").name("tester").email("tester01@test.com").build();
-		Member member = new Member(1L, "tester01", "tester12!@", "tester", "tester01@test.com");
-		given(memberRepository.save(any(Member.class))).willReturn(member);
-		//when
-		Member joinedMember = memberService.joinMember(memberDto);
-		//then
-		Assertions.assertThat(joinedMember).isEqualTo(member);
-	}
-	
-	@Test
-	@DisplayName("사용자 정보 업데이트 테스트")
-	public void updateMemberTest() {
-		//given
-		MemberDto updateMemberDto = MemberDto.builder().id("tester02").pwd("tester34!@").name("tester02").email("tester02@test.com").build();
-		Member member = new Member(1L, "tester01", "tester12!@", "tester", "tester01@test.com");
-		given(memberService.findMember(member.getMember_sn())).willReturn(member);
-		//when
-		when(memberRepository.save(null)).thenReturn(member);
-		Member updatedMember = memberService.updateMember(updateMemberDto);
-		//then
-		Assertions.assertThat(updatedMember.getMember_sn()).isEqualTo(member.getPwd());
-		Assertions.assertThat(updatedMember.getId()).isEqualTo(updateMemberDto.getId());
-		Assertions.assertThat(updatedMember.getPwd()).isEqualTo(member.getPwd());
-		Assertions.assertThat(updatedMember.getName()).isEqualTo(updateMemberDto.getName());
-		Assertions.assertThat(updatedMember.getEmail()).isEqualTo(updateMemberDto.getEmail());
-	}
+	   @Mock
+	    private MemberRepository memberRepository;
+
+	    private MemberService memberService;
+
+	    @BeforeEach
+	    void setUp() {
+	        MockitoAnnotations.openMocks(this);
+	        memberService = new MemberService(memberRepository);
+	    }
+
+	    @Test
+	    void testJoinMember() throws ResourceDuplicatedException {
+	        MemberDto memberDto = new MemberDto(1L, "tester", "password", "Tester", "tester@test.com");
+	        Member member = memberDto.toEntity();
+
+	        // When: 회원가입
+	        when(memberRepository.save(any(Member.class))).thenReturn(member);
+
+	        Member result = memberService.joinMember(memberDto);
+
+	        // Then: 저장된 회원 객체가 반환되어야 함
+	        assertNotNull(result);
+	        assertEquals("tester", result.getId());
+	        verify(memberRepository, times(1)).save(any(Member.class));
+	    }
+
+	    @Test
+	    void testFindMember() {
+	        Long memberSn = 1L;
+	        Member member = new Member(1L, "tester", "password", "Tester", "tester@test.com");
+
+	        // When: 회원 조회
+	        when(memberRepository.findById(eq(memberSn))).thenReturn(Optional.of(member));
+
+	        Member result = memberService.findMember(memberSn);
+
+	        // Then: 해당 회원이 반환되어야 함
+	        assertNotNull(result);
+	        assertEquals(memberSn, result.getMemberSn());
+	        assertEquals("tester", result.getId());
+	        verify(memberRepository, times(1)).findById(eq(memberSn));
+	    }
+
+	    @Test
+	    void testFindMember_throwsException_whenNotFound() {
+	        Long memberSn = 1L;
+
+	        // When: 회원 조회 (회원이 존재하지 않으면 예외 발생)
+	        when(memberRepository.findById(eq(memberSn))).thenReturn(Optional.empty());
+
+	        // Then: ResourceNotFoundException 예외가 발생해야 함
+	        assertThrows(ResourceNotFoundException.class, () -> memberService.findMember(memberSn));
+	    }
+
+	    @Test
+	    void testFindMemberList() {
+	        // Given: 회원 목록
+	        Member member1 = new Member(1L, "tester1", "password", "Tester1", "tester1@test.com");
+	        Member member2 = new Member(2L, "tester2", "password", "Tester2", "tester2@test.com");
+
+	        // When: 회원 목록 조회
+	        when(memberRepository.findAll()).thenReturn(Arrays.asList(member1, member2));
+
+	        // Then: 회원 목록이 반환되어야 함
+	        var result = memberService.findMemberList();
+	        assertNotNull(result);
+	        assertEquals(2, result.size());
+	        verify(memberRepository, times(1)).findAll();
+	    }
+
+	    @Test
+	    void testUpdateMember() {
+	        Long memberSn = 1L;
+	        MemberDto memberDto = new MemberDto(1L, "tester", "password", "Updated Name", "updated@test.com");
+	        Member member = new Member(1L, "tester", "password", "Tester", "tester@test.com");
+
+	        // When: 회원 조회 후 업데이트
+	        when(memberRepository.findById(eq(memberSn))).thenReturn(Optional.of(member));
+	        when(memberRepository.save(any(Member.class))).thenReturn(member);
+
+	        Member result = memberService.updateMember(memberDto);
+
+	        // Then: 업데이트된 회원 객체가 반환되어야 함
+	        assertNotNull(result);
+	        assertEquals("Updated Name", result.getName());
+	        verify(memberRepository, times(1)).findById(eq(memberSn));
+	        verify(memberRepository, times(1)).save(any(Member.class));
+	    }
+
+	    @Test
+	    void testDeleteMember() {
+	        Long memberSn = 1L;
+
+	        // When: 회원 삭제
+	        doNothing().when(memberRepository).deleteById(eq(memberSn));
+
+	        memberService.deleteMember(memberSn);
+
+	        // Then: 삭제 메서드가 호출되어야 함
+	        verify(memberRepository, times(1)).deleteById(eq(memberSn));
+	    }
 
 }

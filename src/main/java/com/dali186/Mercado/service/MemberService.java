@@ -79,6 +79,14 @@ public class MemberService {
 		return member.updateMemberInfo(request);
 	}
 	
+	/** 
+	 * methodName: deleteMember
+	 * description: 사용자 제거
+	 * domain: Service
+	 * ========================================
+	 * @since 2025. 1. 7.
+	 * @author jwkim
+	 */
 	@Transactional
 	public void deleteMember(Long memberSn) {
 		
